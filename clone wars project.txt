@@ -1,0 +1,407 @@
+import pygame
+import math
+import random
+import enemy
+import player
+
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
+font = pygame.font.SysFont('Arial', 40, 'bold')
+
+#Backgrounds
+geonosis_arena1 = pygame.image.load('geonosis_arena1.png')
+geonosis_arena2 = pygame.image.load('geonosis_arena2.png')
+geonosis_arena3 = pygame.image.load('geonosis_arena3.png')
+geonosis_arena4 = pygame.image.load('geonosis_arena4.png')
+geonosis_arena5 = pygame.image.load('geonosis_arena5.png')
+
+#Sprites
+ana = pygame.image.load('anakin_1.png')
+ana_win1 = pygame.image.load('anakin_win1.png')
+ana_r1 = pygame.image.load('anakin_run1.png')
+ana_r2 = pygame.image.load('anakin_run2.png')
+ana_r3 = pygame.image.load('anakin_run3.png')
+ana_r4 = pygame.image.load('anakin_run4.png')
+ana_r5 = pygame.image.load('anakin_run5.png')
+ana_r6 = pygame.image.load('anakin_run6.png')
+ana_r7 = pygame.image.load('anakin_run7.png')
+ana_r8 = pygame.image.load('anakin_run8.png')
+ana_r9 = pygame.image.load('anakin_run9.png')
+ana_r10 = pygame.image.load('anakin_run10.png')
+ana_r11 = pygame.image.load('anakin_run11.png')
+ana_r12 = pygame.image.load('anakin_run12.png')
+ana_r13 = pygame.image.load('anakin_run13.png')
+ana_h1 = pygame.image.load('anakin_hit1.png')
+ana_h2 = pygame.image.load('anakin_hit2.png')
+ana_h3 = pygame.image.load('anakin_hit3.png')
+ana_h4 = pygame.image.load('anakin_hit4.png')
+ana_h5 = pygame.image.load('anakin_hit5.png')
+ana_h6 = pygame.image.load('anakin_hit6.png')
+ana_h7 = pygame.image.load('anakin_hit7.png')
+ana_h8 = pygame.image.load('anakin_hit8.png')
+ana_h9 = pygame.image.load('anakin_hit9.png')
+ana_heal1 = pygame.image.load('ana_heal1.png')
+ana_heal2 = pygame.image.load('ana_heal2.png')
+ana_heal3 = pygame.image.load('ana_heal3.png')
+ana_heal4 = pygame.image.load('ana_heal4.png')
+ana_heal5 = pygame.image.load('ana_heal5.png')
+ana_heal6 = pygame.image.load('ana_heal6.png')
+ana_heal7 = pygame.image.load('ana_heal7.png')
+ana_heal8 = pygame.image.load('ana_heal8.png')
+ana_heal9 = pygame.image.load('ana_heal9.png')
+b_droid1 = pygame.image.load('battle_droid1.png')
+bdroid_att1 = pygame.image.load('bdroid_att1.png')
+bdroid_att2 = pygame.image.load('bdroid_att2.png')
+bdroid_att3 = pygame.image.load('bdroid_att3.png')
+bdroid_att4 = pygame.image.load('bdroid_att4.png')
+bdroid_att5 = pygame.image.load('bdroid_att5.png')
+bdroid_att6 = pygame.image.load('bdroid_att6.png')
+bdroid_att7 = pygame.image.load('bdroid_att7.png')
+bdroid_death1 = pygame.image.load('bdroid_death1.png')
+bdroid_death2 = pygame.image.load('bdroid_death2.png')
+bdroid_death3 = pygame.image.load('bdroid_death3.png')
+bdroid_death4 = pygame.image.load('bdroid_death4.png')
+bdroid_death5 = pygame.image.load('bdroid_death5.png')
+bdroid_death6 = pygame.image.load('bdroid_death6.png')
+bdroid_death7 = pygame.image.load('bdroid_death7.png')
+bdroid_death8 = pygame.image.load('bdroid_death8.png')
+bdroid_death9 = pygame.image.load('bdroid_death9.png')
+sdroid_hit1 = pygame.image.load('sdroid_hit1.png')
+sdroid_hit2 = pygame.image.load('sdroid_hit2.png')
+sdroid_hit3 = pygame.image.load('sdroid_hit3.png')
+sdroid_hit4 = pygame.image.load('sdroid_hit4.png')
+sdroid_hit5 = pygame.image.load('sdroid_hit5.png')
+sdroid_hit6 = pygame.image.load('sdroid_hit6.png')
+
+#HUD Sprites
+battle_1 = pygame.image.load('battleHUD.png')
+battle_1 = pygame.transform.scale(battle_1, (800, 200))
+battle_done = pygame.image.load('victoryHUD.png')
+battle_done = pygame.transform.scale(battle_done, (800, 200))
+arrow = pygame.image.load('arrow.png')
+arrow = pygame.transform.scale(arrow, (60, 30))
+failRun = pygame.image.load('failedRunHUD.png')
+failRun = pygame.transform.scale(failRun, (800, 200))
+force_display = pygame.image.load('forceHUD.png')
+force_display = pygame.transform.scale(force_display, (800, 200))
+
+#Image lists
+ana_run = [ana_r1, ana_r2, ana_r3, ana_r4, ana_r5, ana_r6, ana_r7, ana_r8, ana_r9, ana_r10, ana_r11, ana_r12, ana_r13]
+geonosis_arenabg = [geonosis_arena1, geonosis_arena2, geonosis_arena3, geonosis_arena4, geonosis_arena5]
+ana_hit = [ana_h1, ana_h2, ana_h3, ana_h4, ana_h5, ana_h6, ana_h7, ana_h8, ana_h9]
+bdroid_death = [bdroid_death1, bdroid_death2, bdroid_death3, bdroid_death4, bdroid_death5, bdroid_death6, bdroid_death7, bdroid_death8, bdroid_death9]
+bdroid_att = [bdroid_att1, bdroid_att2, bdroid_att3, bdroid_att4, bdroid_att5, bdroid_att6, bdroid_att7]
+sdroid_hit = [sdroid_hit1, sdroid_hit2, sdroid_hit3, sdroid_hit4, sdroid_hit5, sdroid_hit6]
+ana_heal = [ana_heal1, ana_heal2, ana_heal3, ana_heal4, ana_heal5, ana_heal6, ana_heal7, ana_heal8, ana_heal9]
+
+#Sounds
+laser_sound = pygame.mixer.Sound('biglaser.wav')
+saber_sound = pygame.mixer.Sound('lightsaber swing.wav')
+heal_sound = pygame.mixer.Sound('Heal.wav')
+explode_sound = pygame.mixer.Sound('Explosion.wav')
+
+#Variables
+level1 = True
+loopspeed = 0.2
+bgindex = 3
+i = 0
+charindex = 0
+enemyindex = 0
+attack = False
+startAttack = False
+enemyAtt = False
+attackOrder = []
+arrowx = 20
+arrowy = 430
+current_arrow = ['up', 'left']
+isBattle = False
+enemyCount = 0
+dice = 0
+inFmenu = False
+forceHeal = False
+
+#Objects
+char = player.Player(100, 400, 100, 100, 5, 'Jedi')
+b_droid = enemy.Bdroid(500, 400, 100, 2)
+
+def battle(char, enemy1):
+    global charindex
+    global enemyindex
+    global startAttack
+    global forceHeal
+    global inFmenu
+    char.isMove = False
+    char.isLeft = False
+
+    if char.speed >= enemy1.speed:
+        if isCol(char, enemy1) != True and char.attack:
+            if charindex <= len(ana_run) - 1:
+                charindex += loopspeed
+                char.move()
+            else:
+                charindex = 0
+            if isCol(char, enemy1):
+                startAttack = True
+                char.attack = False
+                charindex = 0
+                saber_sound.play()
+        elif startAttack:
+            if charindex <= len(ana_hit) - 1:
+                charindex += loopspeed
+            else:
+                if enemy1.death != True:
+                    enemy1.health -= char.dmg
+                charindex = 0
+                startAttack = False
+                char.x = 100
+                enemy1.attack = True
+                if enemy1.healthCheck() != True:
+                    laser_sound.play()
+        elif forceHeal:
+            if charindex <= len(ana_heal) - 1:
+                charindex += loopspeed
+            else:
+                charindex = 0
+                char.health += 50
+                if char.health > 100:
+                    char.health = 100
+                char.force -= 25
+                enemy1.attack = True
+                forceHeal = False
+                inFmenu = False
+                if enemy1.healthCheck() != True:
+                    laser_sound.play()
+
+
+        if enemy1.healthCheck() != True:
+            if enemy1.attack:
+                if bgindex == 4:
+                    if enemyindex < len(sdroid_hit) - 1:
+                        enemyindex += loopspeed
+                    else:
+                        enemyindex = 0
+                        char.health -= enemy1.dmg
+                        enemy1.attack = False
+                else:
+                    if enemyindex < len(bdroid_att) - 1:
+                        enemyindex += loopspeed
+                    else:
+                        enemyindex = 0
+                        char.health -= enemy1.dmg
+                        enemy1.attack = False
+
+        if enemy1.healthCheck() and enemy1.death != True:
+            enemy1.health = 0
+            explode_sound.play()
+            if enemyindex <= len(bdroid_death) - 1:
+                enemyindex += loopspeed
+            else:
+                enemyindex = 0
+                char.exp += 500
+                char.levelCheck()
+                b_droid.death = True
+
+def charReset(char):
+    global charindex
+
+    char.x = 100
+    char.y = 400
+    charindex = 0
+
+#Functions
+
+def draw_screen():
+    screen.fill((0,0,0))
+    bg = pygame.transform.scale(geonosis_arenabg[bgindex], (800, 600))
+    char_image = pygame.transform.scale(ana, (100, 100))
+    if char.isLeft:
+        char_image = pygame.transform.flip(char_image, True, False)
+    enemy_image = pygame.transform.scale(b_droid1, (100, 100))
+    if bgindex == 4:
+        enemy_image = pygame.transform.scale(sdroid_hit1, (100, 100))
+
+    if isBattle and b_droid.death != True:
+        screen.blit(bg, (0, -200))
+
+        #HUD
+        screen.blit(battle_1, (0, 400))
+        if inFmenu:
+            screen.blit(force_display, (0, 400))
+        arrow.set_colorkey((255,255,255))
+        screen.blit(arrow, (arrowx, arrowy))
+    elif b_droid.death == True and isBattle:
+        screen.blit(bg, (0, -200))
+
+        # HUD
+        screen.blit(battle_done, (0, 400))
+    else:
+        screen.blit(bg, (0,0))
+
+    if char.attack or char.isMove:
+        char_image = pygame.transform.scale(ana_run[int(charindex)], (100, 100))
+        if char.isLeft:
+            char_image = pygame.transform.flip(char_image, True, False)
+    elif startAttack:
+        char_image = pygame.transform.scale(ana_hit[int(charindex)], (100, 100))
+    elif forceHeal:
+        char_image = pygame.transform.scale(ana_heal[int(charindex)], (100, 100))
+
+    if b_droid.healthCheck() and b_droid.death != True:
+        enemy_image = pygame.transform.scale(bdroid_death[int(enemyindex)], (100, 100))
+    elif b_droid.death:
+        enemy_image = pygame.transform.scale(bdroid_death[8], (100, 100))
+        char_image = pygame.transform.scale(ana_win1, (100, 150))
+    elif b_droid.attack:
+        enemy_image = pygame.transform.scale(bdroid_att[int(enemyindex)], (100, 100))
+        if bgindex == 4:
+            enemy_image = pygame.transform.scale(sdroid_hit[int(enemyindex)], (100, 100))
+
+    char_image.set_colorkey((0,0,255))
+    enemy_image.set_colorkey((0, 0, 255))
+
+    screen.blit(enemy_image, (b_droid.x, b_droid.y))
+    screen.blit(char_image, (char.x, char.y))
+
+    #General HUD for char
+    pygame.draw.rect(screen, (0, 0, 0), (0, 0, 175, 60))
+    pygame.draw.rect(screen, (211, 211, 211), (60, 10, 100, 10))
+    pygame.draw.rect(screen, (211, 211, 211), (60, 25, 100, 10))
+    pygame.draw.rect(screen, (211, 211, 211), (60, 40, 100, 10))
+
+    pygame.draw.rect(screen, (255, 0, 0), (60, 10, char.health, 10))
+    pygame.draw.rect(screen, (0, 0, 255), (60, 25, char.force, 10))
+    pygame.draw.rect(screen, (0, 255, 0), (60, 40, char.exp/(char.level*10), 10))
+
+    level_display = font.render(str(char.level), True, (0,255,0))
+    screen.blit(level_display, (5, 5))
+
+def draw_HUD():
+
+    pygame.draw.rect(screen, (255, 0, 0), (b_droid.x, b_droid.y - 10, 100, 10))
+    pygame.draw.rect(screen, (0, 255, 0), (b_droid.x, b_droid.y - 10, b_droid.health/b_droid.maxhealth, 10))
+
+def isCol(t1, t2):
+    distance = math.sqrt(math.pow(t1.x - t2.x, 2) + math.pow(t1.y - t2.y, 2))
+    if distance < 50:
+        return True
+    else:
+        return False
+
+while level1:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            level1 = False
+        if event.type == pygame.KEYDOWN:
+            if isBattle:
+                if event.key == pygame.K_RETURN:
+                    if b_droid.healthCheck() != True and current_arrow == ['up', 'left']:
+                        if inFmenu:
+                            if char.force >= 25 and char.health < 100:
+                                charindex = 0
+                                forceHeal = True
+                                heal_sound.play()
+                        else:
+                            char.attack = True
+                    elif current_arrow == ['down', 'right']:
+                        dice = random.randint(0, 6)
+                        if dice <= (2 + char.speed - b_droid.speed):
+                            isBattle = False
+                            char.health -= b_droid.dmg
+                            charReset(char)
+                            b_droid = enemy.Bdroid(1000, 400, 100, 2)
+                        else:
+                            laser_sound.play()
+                            b_droid.attack = True
+                    elif current_arrow == ['up', 'right'] and b_droid.healthCheck() != True:
+                        inFmenu = True
+                    elif b_droid.death:
+                        isBattle = False
+                        inFmenu = False
+                        # Reset
+                        charReset(char)
+                        b_droid = enemy.Bdroid(1000, 400, 100, 2)
+                        if bgindex == 2 and enemyCount == 0:
+                            b_droid.x = 500
+                            enemyCount += 1
+                        if bgindex == 3:
+                            b_droid = enemy.Sbdroid(1000, 400, 300, 1)
+                elif event.key == pygame.K_RIGHT and ('right' in current_arrow) != True:
+                    arrowx += 375
+                    current_arrow[1] = 'right'
+                elif event.key == pygame.K_LEFT and ('left' in current_arrow) != True:
+                    arrowx -= 375
+                    current_arrow[1] = 'left'
+                elif event.key == pygame.K_UP and ('up' in current_arrow) != True:
+                    arrowy -= 80
+                    current_arrow[0] = 'up'
+                elif event.key == pygame.K_DOWN and ('down' in current_arrow) != True:
+                    arrowy += 80
+                    current_arrow[0] = 'down'
+                elif event.key == pygame.K_BACKSPACE:
+                    inFmenu = False
+        if event.type == pygame.MOUSEBUTTONUP:
+            pos = pygame.mouse.get_pos()
+            print(pos)
+
+    draw_screen()
+
+    if isBattle:
+        battle(char, b_droid)
+        draw_HUD()
+    else:
+        keys = pygame.key.get_pressed()
+        if isCol(char, b_droid):
+            isBattle = True
+            char.x = 100
+            char.y = 200
+            b_droid.x = 500
+            b_droid.y = 200
+        else:
+            if keys[pygame.K_LEFT]:
+                char.x -= char.speed
+                char.isLeft = True
+                char.isMove = True
+                if charindex <= len(ana_run) - 1:
+                    charindex += loopspeed
+                else:
+                    charindex = 0
+            elif keys[pygame.K_RIGHT]:
+                char.x += char.speed
+                char.isLeft = False
+                char.isMove = True
+                if charindex <= len(ana_run) - 1:
+                    charindex += loopspeed
+                else:
+                    charindex = 0
+            else:
+                char.isMove = False
+
+    #Switching Rooms
+    if bgindex != 0 and char.x < -10:
+        bgindex -= 1
+        char.x = 700
+        if bgindex == 2:
+            b_droid.x = 200
+        else:
+            b_droid.x = 500
+        enemyCount = 0
+    elif bgindex == 0 and char.x < 10:
+        char.x = 10
+
+    if char.x > 850 and (bgindex != len(geonosis_arenabg) - 1):
+        if bgindex == 3:
+            b_droid = enemy.Sbdroid(1000, 400, 300, 1)
+        char.x = 10
+        bgindex += 1
+        if bgindex == 2:
+            b_droid.x = 200
+        else:
+            b_droid.x = 500
+        enemyCount = 0
+    elif (bgindex == len(geonosis_arenabg) - 1) and char.x > 700:
+        char.x = 700
+
+
+    pygame.display.update()
+
+pygame.quit()

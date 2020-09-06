@@ -1,0 +1,15 @@
+1 (lvl)
+0 (bgindex)
+100 (health)
+100 (force)
+40 (dmg)
+100 (maxhealth)
+100 (maxforce)
+ForceHeal (abilities)
+0 (exp)
+1 boltlvl
+1 heallvl
+0 skillpoints
+0 stage
+1 trooplvl
+100 (troophp)

@@ -1,0 +1,15 @@
+8 (lvl)
+3 (bgindex)
+90 (health)
+450 (force)
+75 (dmg)
+240 (maxhealth)
+450 (maxhealth)
+ForceHeal ForceBolt (abilities)
+0 exp
+2 boltlvl
+2 heallvl
+0 skillpoints
+1 stage
+1 trooplvl
+75 troophealth

@@ -1,0 +1,76 @@
+import pygame
+
+pygame.init()
+screen = pygame.display.set_mode((800, 600))
+font = pygame.font.SysFont('Arial', 30)
+
+hello = font.render('Hello', True, (255,255,255))
+
+#Images
+defaultchar = pygame.image.load('anakin_run1.png')
+char_att1 = pygame.image.load('anakin_hit1.png')
+char_att2 = pygame.image.load('anakin_hit2.png')
+char_att3 = pygame.image.load('anakin_hit3.png')
+char_att4 = pygame.image.load('anakin_hit4.png')
+char_att5 = pygame.image.load('anakin_hit5.png')
+char_att6 = pygame.image.load('anakin_hit6.png')
+char_att7 = pygame.image.load('anakin_hit7.png')
+char_att8 = pygame.image.load('anakin_hit8.png')
+char_att9 = pygame.image.load('anakin_hit9.png')
+
+#Images list
+char_att = [char_att1, char_att2, char_att3, char_att4, char_att5, 
+char_att6, char_att7, char_att8, char_att9]
+
+#Variables
+charx = 100
+chary = 400
+run = True
+loopspeed = 0.01
+isAttack = False
+charindex = 0
+
+def battle():
+  global loopspeed
+  global isAttack
+  global charindex
+  
+  if charindex <= len(char_att) - 1:
+    charindex += loopspeed
+  else:
+    charindex = 0
+    isAttack = False
+    
+
+def draw_screen():
+  screen.fill((0,0,0))
+  screen.blit(hello, (100, 100))  
+  if isAttack:
+    screen.blit(char_att[int(charindex)], (charx, chary))
+  else:
+    screen.blit(defaultchar, (charx, chary))
+
+
+while run:
+  
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      run = False
+    if event.type == pygame.KEYDOWN:
+      if event.key == pygame.K_RETURN:
+        isAttack = True
+      
+  keys = pygame.key.get_pressed()
+  if keys[pygame.K_RIGHT]:
+    charx += 0.5
+  if keys[pygame.K_LEFT]:
+    charx -= 0.5
+ 
+  if isAttack:
+    battle()
+ 
+  draw_screen()
+  
+  pygame.display.update()
+  
+pygame.quit()
